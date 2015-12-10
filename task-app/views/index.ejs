@@ -5,7 +5,20 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
-
+<script>
+var drawerClosed=true;
+function toggleFormView(){
+if(drawerClosed){
+	document.getElementById('myform').className="formShow";
+	document.getElementById('togglebutton').value="Close Task Form";
+	drawerClosed=false;
+}else{
+	document.getElementById('myform').className="formHide";
+	document.getElementById('togglebutton').value="Open Task Form";
+	drawerClosed=true;
+}
+}
+</script>
 <style>
 .glyphicon-remove { cursor:pointer }
 
@@ -13,14 +26,25 @@ table, td,th  {
   border: 1px solid grey;
   border-collapse: collapse;
   padding: 5px;
+  cursor:pointer;
 }
+.formHide{
+	display:none;
+	transition: 1s linear all;
+}
+.formShow{
+	display:block;
+	transition: 1s linear all;
+}
+
 </style>
 </head>
 
 <body ng-app="task" ng-controller="MainCtrl" data-ng-init="init()">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-      <form ng-submit="addTask()"
+<hr/>
+      <form ng-submit="addTask()" id="myform" class="formHide"
         style="margin-top:30px;">
         <h2>My Task Form</h2>
 
@@ -36,9 +60,14 @@ table, td,th  {
           placeholder="Description"
           ng-model="description"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Add Task</button>
+	<input type="hidden" ng-model="id"/>
+        <button ng-show="!isUpdate" type="submit" class="btn btn-primary">Add</button>
+        <button ng-show="isUpdate" ng-click="updateTask()" class="btn btn-primary">Update</button> 
+	<button ng-show="isUpdate" type="cancel" ng-click="clearForm()" class="btn btn-info">Cancel</button>
       </form>
-<hr/>
+
+<input type="button" value="Open Task Form" id="togglebutton" class="btn btn-primary" onclick="toggleFormView()"/>
+
       <div class="page-header">
         <h2>My Task List</h2>
       </div>
@@ -48,13 +77,13 @@ table, td,th  {
 			<th>Description</th>
 			<th></th>
 		</tr>
-		<tr ng-repeat="task in tasks | orderBy: '-title'">
-			<td ng-if="$odd" style="background-color:#f1f1f1">{{ task.title }}</td>
-			<td ng-if="$even">{{ task.title}}</td>
-			<td ng-if="$odd" style="background-color:#f1f1f1">{{ task.description }}</td>
-			<td ng-if="$even">{{ task.description }}</td>
+		<tr ng-repeat="task in tasks | orderBy: '-title'" >
+			<td ng-if="$odd" onclick="drawerClosed=true;toggleFormView();" style="background-color:#f1f1f1" ng-click="editTask(task)">{{ task.title }}</td>
+			<td ng-if="$even" onclick="drawerClosed=true;toggleFormView();" ng-click="editTask(task)">{{ task.title}}</td>
+			<td ng-if="$odd" onclick="drawerClosed=true;toggleFormView();" style="background-color:#f1f1f1" ng-click="editTask(task)">{{ task.description }}</td>
+			<td ng-if="$even" onclick="drawerClosed=true;toggleFormView();" ng-click="editTask(task)">{{ task.description }}</td>
 			<td>
-				<span class="glyphicon glyphicon-remove"
+				<span class="glyphicon glyphicon-remove btn btn-danger"
 	          			ng-click="deleteTask(task)">
 				</span>
 			</td>

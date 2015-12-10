@@ -57,3 +57,13 @@ router.delete('/tasks/:task', function(req, res) {
         });
 });
 
+router.put('/tasks/:task', function (req, res) {
+
+	Task.findOne({ _id: req.task }, function (err, doc){
+	  doc.title = req.body.title;
+	  doc.description=req.body.description;
+	  doc.save();
+	});
+	res.json(req.task);
+});
+
