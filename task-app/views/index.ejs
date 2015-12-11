@@ -44,7 +44,7 @@ table, td,th  {
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
 <hr/>
-      <form ng-submit="addTask()" id="myform" class="formHide"
+      <form ng-show="isOpen" ng-submit="addTask()" id="myform" 
         style="margin-top:30px;">
         <h2>My Task Form</h2>
 
@@ -61,12 +61,12 @@ table, td,th  {
           ng-model="description"></textarea>
         </div>
 	<input type="hidden" ng-model="id"/>
-        <button ng-show="!isUpdate" type="submit" class="btn btn-primary">Add</button>
-        <button ng-show="isUpdate" ng-click="updateTask()" class="btn btn-primary">Update</button> 
-	<button ng-show="isUpdate" type="cancel" ng-click="clearForm()" class="btn btn-info">Cancel</button>
+        <button ng-show="isAdd" type="submit" class="btn btn-primary">Add</button>
+        <button ng-show="!isAdd" class="btn btn-primary">Update</button> 
+	<input type="button" type="cancel"  ng-click="clearForm()" class="btn btn-info" value="Cancel"/>
       </form>
 
-<input type="button" value="Open Task Form" id="togglebutton" class="btn btn-primary" onclick="toggleFormView()"/>
+<input type="button" ng-show="!isOpen" value="Add Task" id="togglebutton" class="btn btn-primary" ng-click="openForm()"/>
 
       <div class="page-header">
         <h2>My Task List</h2>
@@ -78,10 +78,10 @@ table, td,th  {
 			<th></th>
 		</tr>
 		<tr ng-repeat="task in tasks | orderBy: '-title'" >
-			<td ng-if="$odd" onclick="drawerClosed=true;toggleFormView();" style="background-color:#f1f1f1" ng-click="editTask(task)">{{ task.title }}</td>
-			<td ng-if="$even" onclick="drawerClosed=true;toggleFormView();" ng-click="editTask(task)">{{ task.title}}</td>
-			<td ng-if="$odd" onclick="drawerClosed=true;toggleFormView();" style="background-color:#f1f1f1" ng-click="editTask(task)">{{ task.description }}</td>
-			<td ng-if="$even" onclick="drawerClosed=true;toggleFormView();" ng-click="editTask(task)">{{ task.description }}</td>
+			<td ng-if="$odd"  style="background-color:#f1f1f1" ng-click="editTask(task)">{{ task.title }}</td>
+			<td ng-if="$even"  ng-click="editTask(task)">{{ task.title}}</td>
+			<td ng-if="$odd"  style="background-color:#f1f1f1" ng-click="editTask(task)">{{ task.description }}</td>
+			<td ng-if="$even"  ng-click="editTask(task)">{{ task.description }}</td>
 			<td>
 				<span class="glyphicon glyphicon-remove btn btn-danger"
 	          			ng-click="deleteTask(task)">

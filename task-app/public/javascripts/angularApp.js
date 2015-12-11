@@ -57,11 +57,12 @@ function($scope,tasks){
 			    description: $scope.description
 			});
 			$scope.id = '';
-			$scope.isUpdate=false;
+
 			tasks.getAll();
 		}
 		$scope.title = '';
 		$scope.description = '';
+		$scope.isOpen=false;
 		
 	};
 	
@@ -77,13 +78,21 @@ function($scope,tasks){
 		$scope.title = task.title;
 		$scope.description = task.description;
 		$scope.id = task._id;
-		$scope.isUpdate=true;
+		$scope.isOpen=true;
+		$scope.isAdd=false;
 	};
 	$scope.clearForm = function(task) {
 		$scope.title = '';
 		$scope.description = '';
 		$scope.id = '';
-		$scope.isUpdate=false;
+		$scope.isOpen=false;
+	};
+	$scope.openForm = function(task) {
+		$scope.title = '';
+		$scope.description = '';
+		$scope.id = '';
+		$scope.isAdd=true;
+		$scope.isOpen=true;
 	};
 
 }]);
